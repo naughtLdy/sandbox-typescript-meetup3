@@ -1,36 +1,41 @@
 <template>
   <div class="container">
     <div>
-      <logo />
-      <h1 class="title">
-        sandbox-typescript-meetup3
-      </h1>
-      <h2 class="subtitle">
-        My glorious Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <p>{{ user1 }}</p>
+      <p>{{ user2 }}</p>
+      <p>{{ user3 }}</p>
+      <p>{{ user4 }}</p>
+      <p>{{ username }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from '~/components/Logo.vue'
+import { Context } from '@nuxt/types'
+import { FetchUser } from '~/store/modules/cs'
+import { mapper } from '~/store'
+
+const csMapper = mapper.module('csStore', true)
 
 export default Vue.extend({
-  components: {
-    Logo
+  computed: {
+    user1() {
+      return this.$store.state.csStore.user.name
+    },
+    user2() {
+      return this.$store.getters['csStore/username']
+    },
+    user3(): string {
+      return this.$store.state.csStore.user.name
+    },
+    ...csMapper.mapState({
+      user4: (state) => state.user.name
+    }),
+    ...csMapper.mapGetters(['username'])
+  },
+  fetch({ store }: Context) {
+    store.dispatch(FetchUser.namespaced({}))
   }
 })
 </script>

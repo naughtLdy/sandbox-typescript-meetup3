@@ -1,4 +1,7 @@
-export default {
+  
+import { Configuration as NuxtConfiguration } from '@nuxt/types';
+
+const config: NuxtConfiguration = {
   srcDir: './src',
   mode: 'universal',
   /*
@@ -33,9 +36,12 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
+    '@nuxt/typescript-build'
   ],
+  typescript: {
+    typeCheck: true,
+  },
+
   /*
    ** Nuxt.js modules
    */
@@ -58,3 +64,5 @@ export default {
     extend(config, ctx) {}
   }
 }
+
+export default config;
